@@ -1,10 +1,17 @@
 package CPU.Com;
 
 /**
- * 寄存器类型，可拥有锚点存储数据
+ * 
  * @author WuyaMony
  */
 public abstract class RegisterType {
-	public anchor[] inout;
+	private int data; 
+	public int getData() {
+		return data;
+	}
+	public void setData(int data) {
+		this.data = data;
+	}
+	public Port[] ports;
 	public String name;
 }

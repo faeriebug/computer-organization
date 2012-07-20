@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import CPU.Com.ExecutableRegister;
-import CPU.Com.anchor;
+import CPU.Com.Port;
 import CPU.InstructionDecode.FecthInstruction;
 import CPU.InstructionDecode.NextInstruction;
 import CPU.InstructionDecode.mIns;
@@ -14,7 +14,7 @@ import CPU.InstructionDecode.mOrder;
 import ModelMachine.GS;
 
 /**
- * 控制逻辑
+ * 
  * @author WuyaMony
  *
  */
@@ -27,8 +27,8 @@ public class ConLogic extends ExecutableRegister{
 	public static final Map<String,Integer> A_con=new HashMap<>();
 	public static final Map<String,Integer> B_con=new HashMap<>();
 	public ConLogic() {
-		inout=new anchor[1];
-		inout[0]=new anchor(18);//0入线，1~17出线
+		inout=new Port[1];
+		inout[0]=new Port(18);//0锟斤拷锟竭ｏ拷1~17锟斤拷锟斤拷
 		inout[0].owner=this;
 		CL_con.put(GS.n_R0, 1);
 		CL_con.put(GS.n_R1, 2);
@@ -78,16 +78,15 @@ public class ConLogic extends ExecutableRegister{
 	}
 	
 	@Override
-	public void signalProcess(anchor sig) {
+	public void signalProcess(Port sig) {
 		switch (sig.data) {
-		case sig_Start://开始运行
-			//取指周期
+		case sig_Start://
 			while(true){
 				//fetch
 				List<mIns> mins=fetch.getMicroOrders(0, 0);
 				runsig(mins);
 				//run
-				inout[0].wire[0].trans();//从IR获取指令
+				inout[0].wire[0].trans();//锟斤拷IR锟斤拷取指锟斤拷
 				mins=mirs.Decode(inout[0].data, 0);
 				runsig(mins);
 				//next

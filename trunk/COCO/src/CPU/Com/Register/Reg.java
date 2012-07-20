@@ -1,27 +1,35 @@
 package CPU.Com.Register;
 
-import CPU.Com.ExecutableRegister;
-import CPU.Com.anchor;
+import CPU.Com.Physics.PhyEventHandler;
+import CPU.Com.Physics;
+import CPU.Com.Port;
+import CPU.Com.RegisterType;
 
-public class Reg extends ExecutableRegister{
+public class Reg extends RegisterType {
 	public static final int sig_CP = 0b1;
-	
-	public Reg(int num) {
-		inout=new anchor[1];
-		inout[0]=new anchor(num);//0入线，1出线
-		inout[0].owner=this;
-	}
-	
-
-	@Override
-	public void signalProcess(anchor sig) {
-		switch (sig.data) {
-		case sig_CP:
-			//处理写入命令
-			inout[0].wire[0].trans();
-			break;
-		default:
-			System.out.println("Error");
+	protected Port sig, in, out;
+	public PhyEventHandler sig_PortSetDataEventHandler = new PhyEventHandler() {
+		@Override
+		public void handle(Physics src) {
+			if (((Port) src).equals(sig)) {
+				switch (((Port) src).getData()) {
+				case sig_CP:
+					setData(in.getData());
+					break;
+				default:
+					System.out.println("Error");
+				}
+			}
 		}
+	};
+
+	public Reg(int num) {
+		if (num < 3) {
+			System.err.println("parameter error!");
+		}
+		ports = new Port[num];
+		sig = ports[0];
+		in = ports[1];
+		out = ports[2];
 	}
 }

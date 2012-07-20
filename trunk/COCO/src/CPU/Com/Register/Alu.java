@@ -1,10 +1,10 @@
 package CPU.Com.Register;
 
 import CPU.Com.ExecutableRegister;
-import CPU.Com.anchor;
+import CPU.Com.Port;
 
 /**
- * ËãÊõÂß¼­µ¥Ôª
+ * 
  * @author WuyaMony
  *
  */
@@ -23,16 +23,16 @@ public class Alu extends ExecutableRegister{
 	public static final int sig_log_AeorB = 0b10011;
 	
 	public Alu() {
-		inout=new anchor[4];//0Ñ¡ÔñA£¬1Ñ¡ÔñB£¬2PSW£¬3Êä³ö
+		inout=new Port[4];//0Ñ¡ï¿½ï¿½Aï¿½ï¿½1Ñ¡ï¿½ï¿½Bï¿½ï¿½2PSWï¿½ï¿½3ï¿½ï¿½ï¿½
 		for (int i = 0; i < inout.length; i++) {
-			inout[i]=new anchor();
+			inout[i]=new Port();
 			inout[i].owner=this;
 		}
 	}
 
 	@Override
-	public void signalProcess(anchor sig) {
-		inout[2].wire[0].trans();//¶ÁÈëPSWÐÅÏ¢
+	public void signalProcess(Port sig) {
+//		inout[2].wire[0].trans();//
 		switch (sig.data) {
 		case sig_ari_A:
 			break;

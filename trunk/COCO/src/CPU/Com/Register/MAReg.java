@@ -1,28 +1,31 @@
 package CPU.Com.Register;
 
-import CPU.Com.anchor;
+import CPU.Com.Physics;
+import CPU.Com.Port;
+import CPU.Com.Physics.PhyEventHandler;
 
 
 public class MAReg extends Reg {
 	public MAReg() {
-		super(2);
+		super(3);
 	}
 
 	public static final int sig_EMAR=0b10;
-	
-	@Override
-	public void signalProcess(anchor sig) {
-		switch (sig.data) {
-		case sig_CP:
-			//¥¶¿Ì–¥»Î√¸¡Ó
-			inout[0].wire[0].trans();
-			break;
-		case sig_EMAR:
-			inout[0].wire[1].trans();
-			break;
-		default:
-			System.out.println("Error");
+	public PhyEventHandler sig_PortSetDataEventHandler = new PhyEventHandler() {
+		@Override
+		public void handle(Physics src) {
+			if (((Port) src).equals(sig)) {
+				switch (((Port) src).getData()) {
+				case sig_CP:
+					setData(in.getData());
+					break;
+				case sig_EMAR:
+					out.setData(getData());
+					break;
+				default:
+					System.out.println("Error");
+				}
+			}
 		}
-	}
-	
+	};
 }
