@@ -1,26 +1,33 @@
 package CPU.Com;
 
-
 /**
- * 单向的导线，不存储信息；
+ * uniware for transmitting data
+ * to use this object, src & des should be set,which is anchor type.
+ * and implements the trans() event handler to fire something physically.
  * @author HuHaixiao
  *
  */
-public class uniwire {
-	private anchor src, des;
-	public uniwire(anchor src, anchor des) {
-		this.src = src;
-		this.des = des;
-	}
-	/**
-	 * 从源锚点传输到目的锚点，并引发传输事件
-	 */
-	public void trans() {
-		System.out.println("\t"+src.owner.name+"-->"+des.owner.name+",data="+src.data);
-		des.data=src.data;
-		
-		if(des.isTrack){
-			des.transEvent();
+public class uniwire extends Physics{
+	public static PhyEvent uniwireSetDataEvent=new PhyEvent() {
+		@Override
+		public String getName() {
+			return "uniwireSetDataEvent";
 		}
+	};
+	public PhyEventHandler portSetDataEventHandler=new PhyEventHandler() {
+		@Override
+		public void handle(Physics src) {
+			setData(((Port)src).getData());
+		}
+	};
+	private int data=0;
+	public int getData() {
+		return data;
 	}
+	public void setData(int data) {
+		this.data = data;
+		FireEvent(uniwireSetDataEvent, uniwire.this);
+	}
+	
+	
 }

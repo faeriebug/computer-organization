@@ -1,6 +1,6 @@
 package ModelMachine;
 
-import CPU.Com.anchor;
+import CPU.Com.Port;
 import CPU.Com.uniwire;
 import CPU.Com.Register.Alu;
 import CPU.Com.Register.innerBus;
@@ -42,9 +42,9 @@ public class ModelMachine {
 		SP = new Reg(2);SP.name=GS.n_SP;
 		PSW = new Reg(3);PSW.name=GS.n_PSW;
 		SH = new Shift();SH.name=GS.n_SHIFTER;
-		IB = new innerBus(12);IB.name=GS.n_IB;// 0ÈëÏß£¬1~11³öÏß
-		DB = new innerBus(5);DB.name=GS.n_DB;// 0MDRÈëÏß£¬1MSÈëÏß£¬2MDR³öÏß£¬3IR³öÏß£¬4MS³öÏß
-		AB = new innerBus(2);AB.name=GS.n_AB;// 0ÈëÏß£¬1³öÏß
+		IB = new innerBus(12);IB.name=GS.n_IB;// 0ï¿½ï¿½ï¿½ß£ï¿½1~11ï¿½ï¿½ï¿½ï¿½
+		DB = new innerBus(5);DB.name=GS.n_DB;// 0MDRï¿½ï¿½ï¿½ß£ï¿½1MSï¿½ï¿½ï¿½ß£ï¿½2MDRï¿½ï¿½ï¿½ß£ï¿½3IRï¿½ï¿½ï¿½ß£ï¿½4MSï¿½ï¿½ï¿½ï¿½
+		AB = new innerBus(2);AB.name=GS.n_AB;// 0ï¿½ï¿½ï¿½ß£ï¿½1ï¿½ï¿½ï¿½ï¿½
 		CB=new innerBus(5);CB.name=GS.n_CB;
 		// A->ALU
 		uniwire a_alu = new uniwire(A.inout[0], ALU.inout[0]);
@@ -221,7 +221,7 @@ public class ModelMachine {
 	}
 
 	public void StartMachine() {
-		anchor sig = new anchor();
+		Port sig = new Port();
 		sig.data = ConLogic.sig_Start;
 		CL.signalProcess(sig);
 	}

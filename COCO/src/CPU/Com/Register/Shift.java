@@ -1,7 +1,7 @@
 package CPU.Com.Register;
 
 import CPU.Com.ExecutableRegister;
-import CPU.Com.anchor;
+import CPU.Com.Port;
 
 public class Shift extends ExecutableRegister{
 	public static final int sig_DM = 0b01;
@@ -9,24 +9,24 @@ public class Shift extends ExecutableRegister{
 	public static final int sig_SR = 0b11;
 
 	public Shift() {
-		inout = new anchor[1];
-		inout[0]=new anchor(2);//0ÈëÏß£¬1³öÏß
+		inout = new Port[1];
+		inout[0]=new Port(2);//0ï¿½ï¿½ï¿½ß£ï¿½1ï¿½ï¿½ï¿½ï¿½
 		inout[0].owner=this;
 	}
 
 	@Override
-	public void signalProcess(anchor sig) {
+	public void signalProcess(Port sig) {
 		switch (sig.data) {
-		case sig_DM:// Ö±´«
+		case sig_DM:// Ö±ï¿½ï¿½
 			inout[0].wire[0].trans();
 			inout[0].wire[1].trans();
 			break;
-		case sig_SL:// ×óÒÆ
+		case sig_SL:// ï¿½ï¿½ï¿½ï¿½
 			inout[0].wire[0].trans();
 			inout[0].data<<=1;
 			inout[0].wire[1].trans();
 			break;
-		case sig_SR:// ÓÒÒÆ
+		case sig_SR:// ï¿½ï¿½ï¿½ï¿½
 			inout[0].wire[0].trans();
 			inout[0].data>>>=1;
 			inout[0].wire[1].trans();

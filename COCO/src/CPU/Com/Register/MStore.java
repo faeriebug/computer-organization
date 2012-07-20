@@ -1,45 +1,47 @@
 package CPU.Com.Register;
 
-import CPU.Com.ExecutableRegister;
-import CPU.Com.anchor;
+import CPU.Com.Physics;
+import CPU.Com.Port;
+import CPU.Com.RegisterType;
+import CPU.Com.Physics.PhyEventHandler;
 
-public class MStore extends ExecutableRegister{
+public class MStore extends RegisterType{
 	public static final int sig_R=0b01;
 	public static final int sig_W=0b10;
 	public int[] sData;
+	private Port sig,in_addr,in_data,out_data;
 	public MStore() {
 		sData=new int[100];
-		inout=new anchor[2];//0地址总线；1数据总线
-		inout[0]=new anchor();//0入线
-		inout[0].owner=this;
-		inout[1]=new anchor(2);//0入线，1出线
-		inout[1].owner=this;
+		ports=new Port[4];
+		sig=ports[0];
+		in_addr=ports[1];
+		in_data=ports[2];
+		out_data=ports[3];
 	}
+	
+	public PhyEventHandler sig_PortSetDataEventHandler = new PhyEventHandler() {
+		@Override
+		public void handle(Physics src) {
+			if (((Port) src).equals(sig)) {
+				switch (((Port) src).getData()) {
+				case sig_R:
+					out_data.setData(getData());
+					break;
+				case sig_W:
+					setData();
+					break;
+				default:
+					System.out.println("Error");
+				}
+			}
+		}
+	};
 	
 	public void setData(){
-		this.sData[inout[0].data]=inout[1].data;
+		this.sData[in_addr.getData()]=in_data.getData();
 	}
 	
-	public void getData(){
-		inout[1].data=this.sData[inout[0].data];
+	public int getData(){
+		return this.sData[in_addr.getData()];
 	}
-	
-	@Override
-	public void signalProcess(anchor sig) {
-		switch (sig.data) {
-		case sig_R://将数据传入数据总线
-			inout[0].wire[0].trans();//从地址总线获取地址
-			this.getData();
-			inout[1].wire[1].trans();//送入数据总线
-			break;
-		case sig_W://将数据从数据总线写入主存
-			inout[0].wire[0].trans();//从地址总线获取地址
-			inout[1].wire[0].trans();//从数据总线获取数据
-			this.setData();
-			break;
-		default:
-			System.out.println("Error");
-		}
-	}
-
 }
